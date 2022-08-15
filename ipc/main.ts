@@ -2,7 +2,7 @@ import {
   clearCache, compileSass, DevToolsClose, DevToolsOpen,
 } from "@rikka/modules/util";
 import child_process from "child_process";
-import { BrowserWindow, dialog, ipcMain } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { promisify } from "util";
 import { rpPath } from "../constants/pc";
@@ -28,13 +28,3 @@ ipcMain.handle("POWERCORD_CACHE_CLEAR", clearCache);
 ipcMain.handle("POWERCORD_COMPILE_MF_SASS", compileSass);
 ipcMain.handle("POWERCORD_WINDOW_IS_MAXIMIZED", (e) => BrowserWindow.fromWebContents(e.sender)?.isMaximized());
 ipcMain.handle("POWERCORD_EXEC_COMMAND", execCommand);
-
-ipcMain.handle("RPCOMPAT_SHOW_DIALOG", (e, params) => {
-  dialog.showMessageBoxSync({
-    title: params.title,
-    type: params.type,
-    message: params.message,
-    detail: params.detail,
-    buttons: params.buttons,
-  });
-});

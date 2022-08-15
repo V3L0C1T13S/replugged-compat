@@ -1,3 +1,4 @@
+import { IPC_Consts } from "@rikka/API/Constants";
 import RikkaPlugin from "@rikka/Common/entities/Plugin";
 import { registerURLCallback } from "@rikka/modules/browserWindowtils";
 import { ipcRenderer } from "electron";
@@ -24,7 +25,7 @@ export default class RepluggedCompat extends RikkaPlugin {
 
   inject() {
     if (!existsSync(this.rpInstallPath)) {
-      ipcRenderer.invoke("RPCOMPAT_SHOW_DIALOG", {
+      ipcRenderer.invoke(IPC_Consts.SHOW_DIALOG, {
         title: "Replugged Compat",
         type: "error",
         message: "Unable to find a valid Replugged installation.",
