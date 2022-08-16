@@ -48,3 +48,6 @@ require("module").Module.globalPaths.push(join(__dirname, "fake_node_modules"));
 const Powercord = require("./Powercord");
 
 (global as any).powercord = new Powercord();
+
+const pc = (global as any).powercord;
+export = pc;

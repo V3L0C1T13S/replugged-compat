@@ -10,6 +10,8 @@ import manifest from "./manifest.json";
 export default class RepluggedCompat extends RikkaPlugin {
   private rpInstallPath = rpPath;
 
+  private powercordInstance?: any;
+
   preInject() {
     registerURLCallback((url, opts, window, originalLoadUrl) => {
       const match = url.match(/^https:\/\/((?:canary|ptb)\.)?discord(app)?\.com\/_powercord\//);
@@ -37,7 +39,15 @@ export default class RepluggedCompat extends RikkaPlugin {
     copyFileSync(join(__dirname, "preload.js"), join(this.rpInstallPath, "src", "preload.js"));
 
     this.log("Loading Replugged");
-    require(`${this.rpInstallPath}/src/preload`);
+    const pc = require(`${this.rpInstallPath}/src/preload`);
     this.log("Finished loading Replugged");
+    this.powercordInstance = pc;
+  }
+
+  uninject() {
+    if (!this.powercordInstance) return;
+    this.powercordInstance.shutdown().catch(() => {
+      this.error("Failed to shutdown Replugged, ignoring error");
+    });
   }
 }
