@@ -4,6 +4,8 @@ import { registerURLCallback } from "@rikka/modules/browserWindowtils";
 import { ipcRenderer } from "electron";
 import { copyFileSync, existsSync } from "fs";
 import { join } from "path";
+import React from "react";
+import { RPSettings } from "./components/RPSettings";
 import { rpPath } from "./constants/pc";
 import manifest from "./manifest.json";
 
@@ -26,6 +28,14 @@ export default class RepluggedCompat extends RikkaPlugin {
   }
 
   inject() {
+    $rk.settingsManager.registerSettings("replugged-compat", {
+      category: "replugged-compat",
+      label: "Replugged Compat",
+      render: () => React.createElement(RPSettings, {
+        settings: this.settings,
+      }),
+    });
+
     if (!existsSync(this.rpInstallPath)) {
       ipcRenderer.invoke(IPC_Consts.SHOW_DIALOG, {
         title: "Replugged Compat",
